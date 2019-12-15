@@ -1,36 +1,46 @@
 package com.test.imageload.cache;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.graphics.Bitmap;
 
-import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.Utils;
+import com.test.imageload.ImageLoadUtils;
 
 public class MemoryCache {
 
-
     private final BitmapLruCache<String, Bitmap> bitmapLruCache;
+    private static MemoryCache instance;
 
-    public MemoryCache() {
+    private MemoryCache() {
         getBitmapCacheSize();
         bitmapLruCache = new BitmapLruCache<>(getBitmapCacheSize());
     }
 
-    private int getBitmapCacheSize() {
-        ActivityManager activityManager = (ActivityManager) Utils.getApp().getSystemService(Context.ACTIVITY_SERVICE);
-        int memoryClass = 0;
-        if (activityManager != null) {
-            memoryClass = activityManager.getMemoryClass();
+    public static MemoryCache getInstance() {
+        if (instance == null) {
+            synchronized (MemoryCache.class) {
+                if (instance == null) {
+                    instance = new MemoryCache();
+                }
+            }
         }
-        return memoryClass / 5;
+        return instance;
     }
 
-    public void put(String url) {
-
+    private int getBitmapCacheSize() {
+        int maxMemory = (int) Runtime.getRuntime().maxMemory();
+        return maxMemory / 5;
     }
 
-    public void get(String url) {
+    public synchronized void put(String url, Bitmap bitmap) {
+        if (bitmap != null) {
+            bitmapLruCache.put(ImageLoadUtils.urlToMd5(url), bitmap);
+        }
+    }
 
+    public Bitmap get(String url) {
+        return bitmapLruCache.get(ImageLoadUtils.urlToMd5(url));
+    }
+
+    public boolean exist(String url) {
+        return bitmapLruCache.get(url) != null;
     }
 }

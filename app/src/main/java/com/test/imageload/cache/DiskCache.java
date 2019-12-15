@@ -2,38 +2,49 @@ package com.test.imageload.cache;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.widget.ImageView;
+import android.os.Environment;
+import android.util.Log;
 
-import com.blankj.utilcode.util.EncryptUtils;
+import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PathUtils;
 import com.jakewharton.disklrucache.DiskLruCache;
+import com.test.imageload.ImageLoadUtils;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.concurrent.Executors;
 
 public class DiskCache {
 
     private static DiskCache instance;
     private static DiskLruCache diskLruCache;
-
-    //文件缓存路径（/data/data/package/cache）
-    public static String diskCacheDir = PathUtils.getInternalAppCachePath() + File.separator + "imageLoad";
-
+    private String diskCacheDir = "imageLoad";
 
     private DiskCache() {
         try {
+            File cacheFile = getCacheDirectory(getDiskCacheDir());
+            if (!cacheFile.exists()) {
+                cacheFile.mkdir();
+            }
+
             //四个参数分别为，1.缓存的路径目录 2.版本号 3.每个节点对应的数据个数，4.缓存的大小，10 * 1024 * 1024 = 10M
-            diskLruCache = DiskLruCache.open(new File(diskCacheDir), 1, Integer.MAX_VALUE, Long.MAX_VALUE);
-        } catch (IOException e) {
-            e.printStackTrace();
+            //valueCount 要注意
+            diskLruCache = DiskLruCache.open(cacheFile, AppUtils.getAppVersionCode(), 1, 1024 * 1024 * 500);
+        } catch (Exception e) {
+            LogUtils.e(Log.getStackTraceString(e));
         }
+    }
+
+    protected File getCacheDirectory(String uniqueName) {
+        String cachePath;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) && !Environment.isExternalStorageRemovable()) {
+            cachePath = PathUtils.getExternalAppCachePath();
+        } else { //  /data/data/package/cache
+            cachePath = PathUtils.getInternalAppCachePath();
+        }
+
+        return new File(cachePath + File.separator + uniqueName);
     }
 
     public static DiskCache getInstance() {
@@ -48,98 +59,33 @@ public class DiskCache {
     }
 
     /**
-     *
-     * @param imageView
      * @param url
      */
-    public void get(ImageView imageView, String url) {
+    public Bitmap get(String url) {
         DiskLruCache.Snapshot snapshot = null;
         try {
-            snapshot = diskLruCache.get(generateFileName(url));
+            snapshot = diskLruCache.get(ImageLoadUtils.urlToMd5(url));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         if (snapshot != null) {
             InputStream inputStream = snapshot.getInputStream(0);
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-            imageView.setImageBitmap(bitmap);
-        } else {
-            put(url);
+            return BitmapFactory.decodeStream(inputStream);
         }
+        return null;
     }
 
-    public void put(final String url) {
-        Executors.newCachedThreadPool().execute(new Runnable() {
-            @Override
-            public void run() {
-                downloadUrlToStream(url);
-            }
-        });
-    }
-
-    private void downloadUrlToStream(String url) {
+    //通过
+    public DiskLruCache.Editor getEditor(String url) {
+        //创建Editor 对象
+        DiskLruCache.Editor edit = null;
         try {
-            //创建Editor 对象
-            DiskLruCache.Editor edit = diskLruCache.edit(generateFileName(url));
-
-            if (edit != null) {
-                //创建输出流
-                OutputStream outputStream = edit.newOutputStream(0);
-                if (downloadUrlToStream(url, outputStream)) {
-                    edit.commit();
-                } else {
-                    //释放编辑锁
-                    edit.abort();
-                }
-                diskLruCache.flush();
-            }
+            edit = diskLruCache.edit(ImageLoadUtils.urlToMd5(url));
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    /**
-     * 从网络中下载图片，并写到缓存中
-     *
-     * @param urlString    下载图片的url
-     * @param outputStream 的作用在于从网络下载图片的时候，图片通过该输出流写到文件系统，也就是说图片下到了磁盘缓存中；
-     * @return
-     */
-    private boolean downloadUrlToStream(String urlString, OutputStream outputStream) {
-        HttpURLConnection urlConnection = null;
-        BufferedOutputStream out = null;
-        BufferedInputStream in = null;
-        try {
-            final URL url = new URL(urlString);
-            urlConnection = (HttpURLConnection) url.openConnection();
-
-            in = new BufferedInputStream(urlConnection.getInputStream(), 8 * 1024);
-            out = new BufferedOutputStream(outputStream, 8 * 1024);
-            int b;
-            while ((b = in.read()) != -1) {
-                out.write(b);
-            }
-            return true;
-        } catch (final IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            try {
-                if (out != null) {
-                    out.close();
-                }
-                if (in != null) {
-                    in.close();
-                }
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
+        return edit;
     }
 
 
@@ -148,12 +94,6 @@ public class DiskCache {
     }
 
     public void setDiskCacheDir(String diskCacheDir) {
-        DiskCache.diskCacheDir = diskCacheDir;
+        this.diskCacheDir = diskCacheDir;
     }
-
-
-    private String generateFileName(String url) {
-        return EncryptUtils.encryptMD5ToString(url);
-    }
-
 }

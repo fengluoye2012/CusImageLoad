@@ -5,6 +5,8 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.test.imageload.imageload.ImageLoad;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -18,5 +20,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        String url = "https://file.yyuehd.com/FuCLS2fyBA4ZcVAHry_meMMG3RW4";
+        ImageLoad.loadImage(url, imageView);
     }
 }
