@@ -3,7 +3,6 @@ package com.test.imageload.download;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.blankj.utilcode.util.Utils;
 import com.jakewharton.disklrucache.DiskLruCache;
 import com.test.imageload.cache.DiskCache;
 

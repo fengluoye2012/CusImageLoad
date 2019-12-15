@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.test.imageload.kotlin.KotlinActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -25,6 +27,13 @@ public class SplashActivity extends Activity {
     public void onViewClicked() {
         Activity act = this;
         Intent intent = new Intent(act, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.splash)
+    public void onSplashViewClicked() {
+        Activity act = this;
+        Intent intent = new Intent(act, KotlinActivity.class);
         startActivity(intent);
     }
 }
