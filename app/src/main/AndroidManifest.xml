@@ -25,6 +25,7 @@
         </activity>
 
         <activity android:name=".kotlin.KotlinActivity" />
+        <activity android:name=".lifecycle.LifeCycleActivity" />
     </application>
 
 </manifest>

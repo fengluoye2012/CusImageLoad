@@ -21,9 +21,7 @@ class KotlinActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_konlin)
         textView = findViewById<TextView>(R.id.textView)
-        if (textView != null) {
-            textView.setText(name)
-        }
+        textView?.setText(name)
 
 
         var user: User = User("fengluoye")

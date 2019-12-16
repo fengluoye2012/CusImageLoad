@@ -9,10 +9,10 @@
 
 问题：
 1）网络下载完成之后，通过什么方式去通知磁盘缓存、内存缓存？？
-
 https://www.jianshu.com/p/f9cfbea586c2
 
+2) 如何和Activity的生命周期绑定在一起？？
+通过Activity 的FragmentManager,绑定一个空的RequestManagerFragment(内部初始化LifecycleListener),同步Activity 的生命周期
 
-
-使用Kotlin 作为开发语言（1月20号 熟练掌握基本用法）
+使用Kotlin 作为开发语言 熟练掌握基本用法
 1、Java和Kotlin混用：https://www.jianshu.com/p/9220227cdfb3

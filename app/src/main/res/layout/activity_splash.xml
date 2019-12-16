@@ -16,5 +16,12 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:gravity="center"
-        android:text="跳转到主界面" />
+        android:text="跳转Kotlin" />
+
+    <TextView
+        android:id="@+id/tv_glide"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:text="绑定Activity 的生命周期" />
 </LinearLayout>
