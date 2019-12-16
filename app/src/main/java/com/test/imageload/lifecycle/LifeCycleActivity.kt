@@ -20,13 +20,14 @@ open class LifeCycleActivity : AppCompatActivity() {
         act = this
         var textView: TextView = TextView(act)
         textView.gravity = Gravity.CENTER
+        textView.setText("绑定生命周期")
 
         setContentView(textView)
 
-//        val layoutParams = textView.layoutParams
-//        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-//        layoutParams.height = ConvertUtils.dp2px(50F)
-//        textView.layoutParams
+        val layoutParams = textView.layoutParams
+        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+        layoutParams.height = ConvertUtils.dp2px(50F)
+        textView.layoutParams
 
         var test: Test = Test()
         LifeCycleDetector.getInstance().observer(this, test)
