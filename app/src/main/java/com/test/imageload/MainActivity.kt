@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         ivGlide = findViewById<ImageView>(R.id.iv_glide)
 
         val url = "https://file.yyuehd.com/FuCLS2fyBA4ZcVAHry_meMMG3RW4"
-        ImageLoad.loadImage(url, imageView)
+        //ImageLoad.loadImage(url, imageView)
 
         //加载图片
         ivGlide?.let { Glide.with(act as MainActivity).load(url).into(it) }
