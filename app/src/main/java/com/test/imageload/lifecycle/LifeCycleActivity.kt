@@ -18,9 +18,11 @@ open class LifeCycleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         act = this
+        var str = "绑定生命周期"
         var textView: TextView = TextView(act)
+
         textView.gravity = Gravity.CENTER
-        textView.setText("绑定生命周期")
+        textView.setText(str)
 
         setContentView(textView)
 
@@ -31,6 +33,5 @@ open class LifeCycleActivity : AppCompatActivity() {
 
         var test: Test = Test()
         LifeCycleDetector.getInstance().observer(this, test)
-
     }
 }

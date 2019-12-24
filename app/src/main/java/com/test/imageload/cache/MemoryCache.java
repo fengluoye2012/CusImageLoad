@@ -32,12 +32,12 @@ public class MemoryCache {
 
     public synchronized void put(String url, Bitmap bitmap) {
         if (bitmap != null) {
-            bitmapLruCache.put(ImageLoadUtils.urlToMd5(url), bitmap);
+            bitmapLruCache.put(ImageLoadUtils.INSTANCE.urlToMd5(url), bitmap);
         }
     }
 
     public Bitmap get(String url) {
-        return bitmapLruCache.get(ImageLoadUtils.urlToMd5(url));
+        return bitmapLruCache.get(ImageLoadUtils.INSTANCE.urlToMd5(url));
     }
 
     public boolean exist(String url) {

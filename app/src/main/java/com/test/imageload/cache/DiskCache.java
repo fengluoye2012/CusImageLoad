@@ -64,7 +64,7 @@ public class DiskCache {
     public Bitmap get(String url) {
         DiskLruCache.Snapshot snapshot = null;
         try {
-            snapshot = diskLruCache.get(ImageLoadUtils.urlToMd5(url));
+            snapshot = diskLruCache.get(ImageLoadUtils.INSTANCE.urlToMd5(url));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,7 +81,7 @@ public class DiskCache {
         //创建Editor 对象
         DiskLruCache.Editor edit = null;
         try {
-            edit = diskLruCache.edit(ImageLoadUtils.urlToMd5(url));
+            edit = diskLruCache.edit(ImageLoadUtils.INSTANCE.urlToMd5(url));
         } catch (IOException e) {
             e.printStackTrace();
         }

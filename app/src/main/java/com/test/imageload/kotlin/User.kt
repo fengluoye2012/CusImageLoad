@@ -1,40 +1,24 @@
 package com.test.imageload.kotlin
 
-import com.blankj.utilcode.util.LogUtils
+/**
+ *
+ */
+data class User(
+        var address: Address = Address(),
+        var isNonProfit: Boolean = false,
+        var links: List<Link> = listOf(),
+        var name: String = "",
+        var page: Int = 0,
+        var url: String = ""
+)
 
-//类 构造函数 get、set 方法
-class User constructor(name: String) {
+data class Address(
+        var city: String = "",
+        var country: String = "",
+        var street: String = ""
+)
 
-    constructor(name: String, age: Int, headUrl: String) : this(name) {
-
-    }
-
-    var name: String? = null
-        get() = field
-        set
-
-    var age: Int = 0
-        get() = field
-        set(value) {
-            if (value < 0) {
-                field = 0
-            } else {
-                field = value
-            }
-        }
-
-    var headUrl: String? = null
-        get() = field
-        private set
-
-
-    init {
-        LogUtils.i("init 方法")
-    }
-
-    fun printName() {
-        LogUtils.i(name)
-    }
-
-
-}
+data class Link(
+        var name: String = "",
+        var url: String = ""
+)

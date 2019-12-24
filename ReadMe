@@ -19,3 +19,9 @@ https://blog.csdn.net/lijinweii/article/details/77717540
 
 使用Kotlin 作为开发语言 熟练掌握基本用法
 1、Java和Kotlin混用：https://www.jianshu.com/p/9220227cdfb3
+2、kotlin 中替代findViewById： https://www.jianshu.com/p/1121c191f4c6
+https://www.jianshu.com/p/e60aa23ab63f
+3、kotlin 中点击事件 https://www.jianshu.com/p/d057ac23eed0
+4、JsonToKotlin插件 将Json 格式化
+
+5、Kotlin重构如何兼容原先的ButterKnife、EventBus3.1： https://www.jianshu.com/p/033cca6b615d
