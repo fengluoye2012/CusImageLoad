@@ -39,7 +39,8 @@ class KotlinActivity : AppCompatActivity(), View.OnClickListener {
         var user: User = User()
         user.name = "风落叶"
 
-        LogUtils.i(user.name)
+        var userInfoBean: UserInfoBean = UserInfoBean("风落叶",12)
+        LogUtils.i(user.name + "，，，" + userInfoBean.name)
     }
 
     //when 表达式类型于 switch
