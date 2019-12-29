@@ -1,4 +1,4 @@
-package com.test.imageload.cache;
+package com.test.imageload.picture.cache;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +9,7 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PathUtils;
 import com.jakewharton.disklrucache.DiskLruCache;
-import com.test.imageload.ImageLoadUtils;
+import com.test.imageload.picture.ImageLoadUtils;
 
 import java.io.File;
 import java.io.IOException;

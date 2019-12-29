@@ -1,7 +1,6 @@
-package com.test.imageload.lifecycle
+package com.test.imageload.picture.lifecycle
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.TextView

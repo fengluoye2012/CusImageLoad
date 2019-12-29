@@ -1,13 +1,13 @@
-package com.test.imageload.imageload;
+package com.test.imageload.picture.imageload;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.test.imageload.cache.DiskCache;
-import com.test.imageload.cache.MemoryCache;
-import com.test.imageload.download.DownLoadUtils;
-import com.test.imageload.download.OnDownloadListener;
+import com.test.imageload.picture.cache.DiskCache;
+import com.test.imageload.picture.cache.MemoryCache;
+import com.test.imageload.picture.download.DownLoadUtils;
+import com.test.imageload.picture.download.OnDownloadListener;
 
 public class ImageLoad {
 

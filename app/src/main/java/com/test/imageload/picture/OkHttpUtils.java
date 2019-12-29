@@ -1,11 +1,10 @@
-package com.test.imageload;
+package com.test.imageload.picture;
 
-import com.test.imageload.download.OnDownloadListener;
+import com.test.imageload.picture.download.OnDownloadListener;
 
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 public class OkHttpUtils {
 

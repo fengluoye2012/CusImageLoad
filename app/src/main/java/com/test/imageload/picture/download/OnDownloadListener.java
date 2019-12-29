@@ -1,4 +1,4 @@
-package com.test.imageload.download;
+package com.test.imageload.picture.download;
 
 public interface OnDownloadListener {
 
