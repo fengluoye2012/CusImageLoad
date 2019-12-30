@@ -5,5 +5,4 @@ package com.test.imageload.base
  */
 interface ItemClickListener {
     fun onItemClick(pos: Int)
-
 }

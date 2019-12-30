@@ -54,4 +54,7 @@ abstract class BaseRecyclerViewAdapter<T> constructor() : RecyclerView.Adapter<R
 
     //条目点击事件
     public var itemClickListener: ItemClickListener? = null
+        set(value) {
+            field = value
+        }
 }

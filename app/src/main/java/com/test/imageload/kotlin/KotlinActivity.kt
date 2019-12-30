@@ -46,7 +46,7 @@ class KotlinActivity : AppCompatActivity(), View.OnClickListener, ItemClickListe
         tv_age.setOnClickListener(this)
 
         var user: User = User()
-        user.name = "风落叶"
+        user.name = "fengluoue"
 
         var userInfoBean: UserInfoBean = UserInfoBean("风落叶", 12)
         LogUtils.i(user.name + "，，，" + userInfoBean.name)
@@ -59,6 +59,7 @@ class KotlinActivity : AppCompatActivity(), View.OnClickListener, ItemClickListe
         adapter = RecyclerViewAdapter()
         recyclerView.adapter = adapter
         adapter?.itemClickListener = this
+
         adapter?.setData(initData())
     }
 
@@ -114,3 +115,4 @@ class KotlinActivity : AppCompatActivity(), View.OnClickListener, ItemClickListe
 
     }
 }
+

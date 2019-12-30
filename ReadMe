@@ -26,5 +26,9 @@ https://www.jianshu.com/p/e60aa23ab63f
 
 5、Kotlin重构如何兼容原先的ButterKnife、EventBus3.1： https://www.jianshu.com/p/033cca6b615d
 
+6、kotlin的NULL 检查机制
+有两种处理方式，字段后加!!像Java一样抛出空异常，另一种字段后加?可不做处理返回值为 null或配合?:做空判断处理；
+
+
 
 三：单元测试
