@@ -1,5 +1,6 @@
 package com.test.imageload.base
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
@@ -8,9 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
  */
 abstract class BaseActivity : AppCompatActivity() {
 
+    protected var act: Activity? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        act = this
+
         setContentView(getLayoutId())
+
         initData()
     }
 

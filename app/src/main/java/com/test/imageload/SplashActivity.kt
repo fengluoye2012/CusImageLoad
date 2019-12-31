@@ -1,22 +1,22 @@
 package com.test.imageload
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.test.imageload.base.BaseActivity
 import com.test.imageload.kotlin.KotlinActivity
 import com.test.imageload.picture.lifecycle.LifeCycleActivity
 
-class SplashActivity : Activity() {
-
-    private var act: Activity? = null
+class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        act = this
-        setContentView(R.layout.activity_splash)
         ButterKnife.bind(this)
+    }
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_splash
     }
 
     @OnClick(R.id.textView)
