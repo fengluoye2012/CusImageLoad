@@ -1,4 +1,4 @@
-package com.test.imageload.cache;
+package com.test.imageload.picture.cache;
 
 import android.graphics.Bitmap;
 import android.util.LruCache;

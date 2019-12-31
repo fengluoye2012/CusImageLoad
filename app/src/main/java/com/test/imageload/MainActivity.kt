@@ -4,7 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.test.imageload.imageload.ImageLoad
+import com.test.imageload.picture.imageload.ImageLoad
 import kotlinx.android.synthetic.main.activity_main.*
 
 

@@ -1,10 +1,10 @@
-package com.test.imageload.download;
+package com.test.imageload.picture.download;
 
 import android.os.Handler;
 import android.os.Looper;
 
 import com.jakewharton.disklrucache.DiskLruCache;
-import com.test.imageload.cache.DiskCache;
+import com.test.imageload.picture.cache.DiskCache;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

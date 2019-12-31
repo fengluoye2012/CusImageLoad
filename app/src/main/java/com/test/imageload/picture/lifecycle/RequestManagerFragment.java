@@ -1,4 +1,4 @@
-package com.test.imageload.lifecycle;
+package com.test.imageload.picture.lifecycle;
 
 
 import android.os.Bundle;

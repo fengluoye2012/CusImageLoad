@@ -2,7 +2,7 @@ package com.test.imageload
 
 import android.app.Application
 
-import com.test.imageload.cache.DiskCache
+import com.test.imageload.picture.cache.DiskCache
 
 class MyApplication : Application() {
 

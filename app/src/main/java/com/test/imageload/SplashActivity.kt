@@ -6,7 +6,7 @@ import android.os.Bundle
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.test.imageload.kotlin.KotlinActivity
-import com.test.imageload.lifecycle.LifeCycleActivity
+import com.test.imageload.picture.lifecycle.LifeCycleActivity
 
 class SplashActivity : Activity() {
 

@@ -1,4 +1,4 @@
-package com.test.imageload.zoom;
+package com.test.imageload.picture.zoom;
 
 import android.content.Context;
 import android.graphics.Matrix;

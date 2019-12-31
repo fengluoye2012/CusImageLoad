@@ -1,4 +1,4 @@
-package com.test.imageload.lifecycle;
+package com.test.imageload.picture.lifecycle;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager;
 public class LifeCycleDetector {
     private static LifeCycleDetector instance = null;
 
-    private final String FRAGMENT_TAG = "com.test.imageload.lifecycle";
+    private final String FRAGMENT_TAG = "com.test.imageload.picture.lifecycle";
 
     public static LifeCycleDetector getInstance() {
         if (instance == null) {

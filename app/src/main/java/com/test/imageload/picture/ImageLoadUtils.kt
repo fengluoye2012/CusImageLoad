@@ -1,4 +1,4 @@
-package com.test.imageload
+package com.test.imageload.picture
 
 import com.blankj.utilcode.util.EncryptUtils
 

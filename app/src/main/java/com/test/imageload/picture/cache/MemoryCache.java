@@ -1,8 +1,8 @@
-package com.test.imageload.cache;
+package com.test.imageload.picture.cache;
 
 import android.graphics.Bitmap;
 
-import com.test.imageload.ImageLoadUtils;
+import com.test.imageload.picture.ImageLoadUtils;
 
 public class MemoryCache {
 
