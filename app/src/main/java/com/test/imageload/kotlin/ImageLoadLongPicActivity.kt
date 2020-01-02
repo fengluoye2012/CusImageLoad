@@ -34,8 +34,8 @@ class ImageLoadLongPicActivity : BaseActivity() {
                     //匿名内部类
                     .addDefaultRequestListener(object : RequestListener<Any> {
                         override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Any>?, isFirstResource: Boolean): Boolean {
-                            LogUtils.i("")
-                            return false
+                            LogUtils.i("onLoadFailed")
+                            return true
                         }
 
                         override fun onResourceReady(resource: Any?, model: Any?, target: Target<Any>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
