@@ -1,6 +1,7 @@
 package com.test.imageload.kotlin
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -96,7 +97,12 @@ class KotlinActivity : AppCompatActivity(), View.OnClickListener, ItemClickListe
      * 条目点击事件
      */
     override fun onItemClick(pos: Int) {
-        ToastUtils.showShort("我是Item%d", pos)
+        val posBean = adapter?.getPosBean(pos) ?: return
+
+        var intent = Intent(act, ImageLoadLongPicActivity::class.java)
+        act?.startActivity(intent)
+
+        ToastUtils.showShort("我是Item%d,,%s", pos, posBean.name)
     }
 
     //参数是Int 类型的a,b相加 返回值为Int

@@ -26,6 +26,7 @@
 
         <activity android:name=".kotlin.KotlinActivity" />
         <activity android:name="com.test.imageload.picture.lifecycle.LifeCycleActivity" />
+        <activity android:name=".kotlin.ImageLoadLongPicActivity" />
     </application>
 
 </manifest>

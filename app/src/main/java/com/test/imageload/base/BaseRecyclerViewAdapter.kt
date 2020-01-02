@@ -34,6 +34,17 @@ abstract class BaseRecyclerViewAdapter<T> constructor() : RecyclerView.Adapter<R
         return list?.size ?: 0
     }
 
+    /**
+     * 根据pos获取对应的实体类
+     */
+    fun getPosBean(pos: Int): T? {
+        return if (pos >= 0 && pos < list?.size ?: 0) {
+            list?.get(pos)
+        } else {
+            null
+        }
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         //条目点击事件
         holder.itemView.setOnClickListener(View.OnClickListener {
@@ -55,6 +66,8 @@ abstract class BaseRecyclerViewAdapter<T> constructor() : RecyclerView.Adapter<R
     //条目点击事件
     public var itemClickListener: ItemClickListener? = null
         set(value) {
-            field = value
+            if (value != null) {
+                field = value
+            }
         }
 }
