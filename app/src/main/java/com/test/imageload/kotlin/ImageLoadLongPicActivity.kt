@@ -14,7 +14,11 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
-
+/**
+ * 加载超长图：使用BitmapRegionDecoder 分片加载
+ * 如何避免OOM?  因为目前直接通过Glide 将图片转换成Bitmap,虽然可以通过分片加载，能够正常加载，但是占用内存大，容易造成OOM，如何解决呢
+ *
+ */
 class ImageLoadLongPicActivity : BaseActivity() {
 
     var mRect: Rect = Rect()
@@ -48,6 +52,7 @@ class ImageLoadLongPicActivity : BaseActivity() {
                     })
                     .asBitmap()
                     .load(url)
+                    .into(imageView)
         }
     }
 
