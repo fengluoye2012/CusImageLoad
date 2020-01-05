@@ -12,12 +12,15 @@ import com.test.imageload.base.BaseActivity
 import kotlinx.android.synthetic.main.long_pic_activity.*
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.IOException
 
 
+/**
+ * ImageView 加载最大长度为4048
+ */
 class ImageLoadLongPicActivity : BaseActivity() {
 
     var mRect: Rect = Rect()
+    var bigBitmap: Bitmap? = null
 
     override fun getLayoutId(): Int {
         return R.layout.long_pic_activity
@@ -27,7 +30,16 @@ class ImageLoadLongPicActivity : BaseActivity() {
     override fun initData() {
         super.initData()
 
-        var url: String = "http://img4.imgtn.bdimg.com/it/u=2852083094,372235004&fm=26&gp=0.jpg"
+        var longPicUrl = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1578050814588&di=c8af6aec4ad1ce70946f81f32b9f9c48&imgtype=0&src=http%3A%2F%2Fa.vpimg3.com%2Fupload%2Fmerchandise%2Fpdc%2F738%2F028%2F107318355143028738%2F0%2F20689190-6.jpg"
+        var longPicUrl2 = "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2279103746,902502804&fm=15&gp=0.jpg"
+        //790*6222
+        var longPicUrl3 = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1578050993921&di=1d98d9d77a2c864a14b903f4c0ba31aa&imgtype=0&src=http%3A%2F%2Fimg001.hc360.cn%2Fhb%2FMTQ2MTAwMzExNzE4Ni0xMzU0NjI2MTgw.jpg"
+        //750*6787
+        var longPicUrl4 = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1578051292452&di=37534d14ae4bde20308d1ab18ede9141&imgtype=0&src=http%3A%2F%2Fsp.vipshop.com%2Fupload%2Fmerchandise%2F257225%2FHONO-A1314391-6.jpg"
+
+//        Glide.with(act as AppCompatActivity).load(url).into(imageView)
+
+//        act?.let { Glide.with(it).load(url).into(imageView) }
 
         act?.let {
             Glide.with(it)
@@ -39,6 +51,7 @@ class ImageLoadLongPicActivity : BaseActivity() {
                         }
 
                         override fun onResourceReady(resource: Any?, model: Any?, target: Target<Any>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                            LogUtils.i("onResourceReady")
                             if (resource is Bitmap) {
                                 setBitmapToImg(resource)
                             }
@@ -47,13 +60,18 @@ class ImageLoadLongPicActivity : BaseActivity() {
                         }
                     })
                     .asBitmap()
-                    .load(url)
+                    .fitCenter()
+                    .load(longPicUrl4)
+                    .into(imageView)
         }
     }
 
     var paint: Paint = Paint()
     private fun setBitmapToImg(resource: Bitmap) {
+
         try {
+
+            LogUtils.i("width：：" + resource.width + ",,height::" + resource.height)
             val baos = ByteArrayOutputStream()
             resource.compress(Bitmap.CompressFormat.PNG, 100, baos)
 
@@ -77,6 +95,8 @@ class ImageLoadLongPicActivity : BaseActivity() {
             val sum = imgHeight / 3000
 
             val redundant = imgHeight % 3000
+
+            LogUtils.i("sum：：$sum,,redundant::$redundant")
 
             val bitmapList: ArrayList<Bitmap> = ArrayList()
 
@@ -103,9 +123,8 @@ class ImageLoadLongPicActivity : BaseActivity() {
 
             }
 
-            val bigBitmap = Bitmap.createBitmap(imgWidth, imgHeight, Bitmap.Config.ARGB_8888)
-            val bigCanvas = Canvas(bigBitmap)
-
+            bigBitmap = Bitmap.createBitmap(imgWidth, imgHeight, Bitmap.Config.ARGB_8888)
+            val bigCanvas = Canvas(bigBitmap as Bitmap)
 
             var iHeight: Float = 0F
 
@@ -119,11 +138,11 @@ class ImageLoadLongPicActivity : BaseActivity() {
             }
 
             imageView.setImageBitmap(bigBitmap)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             e.printStackTrace()
+        } finally {
+
         }
-
     }
-
 }
 
