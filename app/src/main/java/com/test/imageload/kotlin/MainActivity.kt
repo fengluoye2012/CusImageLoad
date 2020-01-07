@@ -1,22 +1,20 @@
 package com.test.imageload.kotlin
 
-import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.test.imageload.CusZoomViewActivity
 import com.test.imageload.R
+import com.test.imageload.base.BaseActivity
 import com.test.imageload.base.ItemClickListener
-import kotlinx.android.synthetic.main.layout_konlin.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * 使用kotlin 中替换findViewById的方式
  */
-class KotlinActivity : AppCompatActivity(), View.OnClickListener, ItemClickListener {
-
+class MainActivity : BaseActivity(), View.OnClickListener, ItemClickListener {
 
     //可变变量定义：var 关键字
     private val age: Int = 12
@@ -24,13 +22,15 @@ class KotlinActivity : AppCompatActivity(), View.OnClickListener, ItemClickListe
     //不可变变量定义：val 关键字，只能赋值一次的变量(类似Java中final修饰的变量)
     private val name: String = "风落叶"
 
-    private var act: Activity? = null
     private var adapter: RecyclerViewAdapter? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.layout_konlin)
-        act = this
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_main
+    }
+
+    override fun initData() {
+        super.initData()
 
         textView.text = name
         tv_name.text = name
@@ -53,6 +53,7 @@ class KotlinActivity : AppCompatActivity(), View.OnClickListener, ItemClickListe
         LogUtils.i(user.name + "，，，" + userInfoBean.name)
     }
 
+
     private fun initRecyclerView() {
 
         var linearLayoutManager: LinearLayoutManager = LinearLayoutManager(act)
@@ -61,12 +62,12 @@ class KotlinActivity : AppCompatActivity(), View.OnClickListener, ItemClickListe
         recyclerView.adapter = adapter
         adapter?.itemClickListener = this
 
-        adapter?.setData(initData())
+        adapter?.setData(generateData())
     }
 
-    private fun initData(): MutableList<UserInfoBean> {
+    private fun generateData(): MutableList<UserInfoBean> {
         var list: ArrayList<UserInfoBean> = ArrayList()
-        for (i in 1..20) {
+        for (i in 1..15) {
             var str = "风落叶$i"
             list.add(UserInfoBean(str))
         }
@@ -99,7 +100,12 @@ class KotlinActivity : AppCompatActivity(), View.OnClickListener, ItemClickListe
     override fun onItemClick(pos: Int) {
         val posBean = adapter?.getPosBean(pos) ?: return
 
-        var intent = Intent(act, ImageLoadLongPicActivity::class.java)
+        var intent = when {
+            pos < adapter?.itemCount?.div(3) ?: 0 -> Intent(act, ImageLoadLongPicActivity::class.java)
+            pos < (adapter?.itemCount?.div(3)
+                    ?: 0) * 2 -> Intent(act, CusZoomViewActivity::class.java)
+            else -> Intent(act, BrowPicActivity::class.java)
+        }
         act?.startActivity(intent)
 
         ToastUtils.showShort("我是Item%d,,%s", pos, posBean.name)

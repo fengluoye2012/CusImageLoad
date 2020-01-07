@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".MainActivity" />
+        <activity android:name=".CusZoomViewActivity" />
 
         <activity android:name=".SplashActivity">
             <intent-filter>
@@ -26,9 +26,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".kotlin.KotlinActivity" />
+        <activity android:name=".kotlin.MainActivity" />
         <activity android:name="com.test.imageload.picture.lifecycle.LifeCycleActivity" />
         <activity android:name=".kotlin.ImageLoadLongPicActivity" />
+        <activity android:name=".kotlin.BrowPicActivity" />
     </application>
 
 </manifest>
