@@ -88,7 +88,6 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
         matrix = new Matrix();
         setScaleType(ScaleType.MATRIX);
 
-
         gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
 
             //单击事件
@@ -106,7 +105,7 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
             //滑动
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                //onTranslation(-distanceX, -distanceY);
+                onTranslation(-distanceX, -distanceY);
                 return true;
             }
 
@@ -121,14 +120,20 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 //惯性滑动处理
-//                flingRunnable = new FlingRunnable(getContext());
-//                flingRunnable.fling(getWidth(), getHeight(), Math.round(velocityX), Math.round(velocityY));
-//                ZoomImageView.this.post(flingRunnable);
+                flingRunnable = new FlingRunnable(getContext());
+                flingRunnable.fling(getWidth(), getHeight(), -Math.round(velocityX), -Math.round(velocityY));
+                ZoomImageView.this.post(flingRunnable);
                 return super.onFling(e1, e2, velocityX, velocityY);
             }
         });
 
         scaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleGestureDetector.OnScaleGestureListener() {
+            //缩放开始，返回值表示是否受理后续的缩放事件
+            @Override
+            public boolean onScaleBegin(ScaleGestureDetector detector) {
+                //返回true,才会进入onScale()方法
+                return true;
+            }
 
             /**
              * 缩放进行中，返回值表示是否下次缩放需要重置，如果返回ture，那么detector就会重置缩放事件，如果返回false，detector会在之前的缩放上继续进行计算。
@@ -138,33 +143,7 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
              */
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
-                //前一个伸缩事件至当前伸缩事件的伸缩比率；大于1 则放大，否则缩小
-                float scaleFactor = detector.getScaleFactor();
-                LogUtils.i("scaleFactor：：" + scaleFactor);
-
-//                //当前的放缩比例
-//                float curScale = getScale();
-//
-//                if (getDrawable() == null) {
-//                    return true;
-//                }
-//
-//                if (curScale < maxScale || scaleFactor < 1.0F) {
-//                    //在手指缩在地方进行缩放
-//                    matrix.postScale(scaleFactor, scaleFactor, detector.getFocusX(), detector.getFocusY());
-//                    //边界检测
-//                    broaderAndCenterCheck();
-//                    setImageMatrix(matrix);
-//                }
-
-                originScale(detector);
-                return true;
-            }
-
-            //缩放开始，返回值表示是否受理后续的缩放事件
-            @Override
-            public boolean onScaleBegin(ScaleGestureDetector detector) {
-                //返回true,才会进入onScale()方法
+                scale(detector);
                 return true;
             }
 
@@ -176,15 +155,14 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
         setOnTouchListener(this);
     }
 
-
-    /**
-     * 原来的缩放过程
-     *
-     * @param detector
-     */
-    private void originScale(ScaleGestureDetector detector) {
-
+    private void scale(ScaleGestureDetector detector) {
+        //前一个伸缩事件至当前伸缩事件的伸缩比率；大于1 则放大，否则缩小
         float scaleFactor = detector.getScaleFactor();
+
+        if (Float.isNaN(scaleFactor) || Float.isInfinite(scaleFactor)) {
+            return;
+        }
+
         //当前的放缩比例
         float curScale = getScale();
 
@@ -205,12 +183,13 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
 
             //在手指缩在地方进行缩放
             matrix.postScale(scaleFactor, scaleFactor, detector.getFocusX(), detector.getFocusY());
-            //边界检测
-            broaderAndCenterCheck();
-
             setImageMatrix(matrix);
+
+            //边界检测
+            removeBorderAndTranslationCenter();
         }
     }
+
 
     //滑动手势操作（移动）
     private void onTranslation(float dx, float dy) {
@@ -219,6 +198,9 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
         }
 
         RectF rectF = getMatrixRectF();
+        if (rectF == null) {
+            return;
+        }
 
         //图片的宽高小于控件宽度时，不允许左右滑动
         if (rectF.width() <= getWidth()) {
@@ -235,7 +217,7 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
         }
 
         matrix.postTranslate(dx, dy);
-        broaderAndCenterCheck();
+        removeBorderAndTranslationCenter();
         setImageMatrix(matrix);
     }
 
@@ -254,18 +236,20 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
 
     }
 
-
-
-
-
     /**
+     * 目前有问题
+     * 消除图片缩放后周围的白边，并且将图片移动到中间位置
      * 图片的宽、高大于 View的宽高的情况下，图片在缩放、滑动、惯性滑动时进行边界控制，防止周围出现白边。
      */
-    private void broaderAndCenterCheck() {
+    private void removeBorderAndTranslationCenter() {
         RectF rectF = getMatrixRectF();
 
-        float deltaX = 0;
-        float delaY = 0;
+        if (rectF == null) {
+            return;
+        }
+
+        float translationX = 0;
+        float translationY = 0;
 
         int width = getWidth();
         int height = getHeight();
@@ -274,39 +258,36 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
         //防止左右两侧出现白边，
         if (rectF.width() >= width) {
             //在图片的宽度大于View的情况下，图片的左边界left>0,表示左侧有白边，需要移动-rectF.left距离。以下同理
-            if (rectF.left > 0) {
-                deltaX = -rectF.left;
+            if (rectF.left >= 0) {
+                translationX = -rectF.left;
             }
 
             //右侧有白边
             if (rectF.right < width) {
-                deltaX = width - rectF.right;
+                translationX = width - rectF.right;
             }
+        } else {
+            //图片的宽、高 小于 View的宽高；
+            //如果宽度和高度小于控件的宽、高；则让其居中（两个中线的差值就是需要移动的距离）
+            translationX = width * 0.5f - (rectF.right - rectF.width() * 0.5f);
         }
 
         //防止上下两侧出现白边
         if (rectF.height() >= height) {
             if (rectF.top > 0) {
-                delaY = -rectF.top;
+                translationY = -rectF.top;
             }
 
             if (rectF.bottom < height) {
-                delaY = height - rectF.bottom;
+                translationY = height - rectF.bottom;
             }
-        }
-
-        //图片的宽、高 小于 View的宽高；
-        //如果宽度和高度小于控件的宽、高；则让其居中（两个中线的差值就是需要移动的距离）
-        if (rectF.width() < width) {
-            deltaX = width / 2F - (rectF.right + rectF.width() / 2F);
-        }
-
-        if (rectF.height() < height) {
-            delaY = height / 2F - (rectF.bottom + rectF.height() / 2F);
+        } else {
+            translationY = height * 0.5f - (rectF.bottom - rectF.height() * 0.5f);
         }
 
         //平移
-        matrix.postTranslate(deltaX, delaY);
+        matrix.postTranslate(translationX, translationY);
+        setImageMatrix(matrix);
     }
 
     /**
@@ -318,19 +299,18 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
         Matrix mMatrix = matrix;
         RectF rectF = new RectF();
         Drawable drawable = getDrawable();
-        if (drawable != null) {
-            rectF.set(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-            //这一步的操作意义: 就是获取drawable 相对屏幕原点的坐标left,top,right,bottom,所以才会有边界校验
-            mMatrix.mapRect(rectF);
-            LogUtils.i("left：：" + rectF.left + ",,top：：" + rectF.top + ",,right：：" + rectF.right + ",,bottom：：" + rectF.bottom);
+        if (drawable == null) {
+            return null;
         }
+
+        rectF.set(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        //这一步的操作意义: 就是获取drawable 相对屏幕原点的坐标left,top,right,bottom,所以才会有边界校验
+        mMatrix.mapRect(rectF);
+        LogUtils.i("left：：" + rectF.left + ",,top：：" + rectF.top + ",,right：：" + rectF.right + ",,bottom：：" + rectF.bottom);
         return rectF;
     }
 
     private float getScale() {
-//        matrix.getValues(mMatrixValues);
-//        return mMatrixValues[Matrix.MSCALE_X];
-
         return (float) Math.sqrt((float) Math.pow(getValue(matrix, Matrix.MSCALE_X), 2) + (float) Math.pow
                 (getValue(matrix, Matrix.MSKEW_Y), 2));
     }
@@ -346,7 +326,6 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
         matrix.getValues(mMatrixValues);
         return mMatrixValues[whichValue];
     }
-
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -372,15 +351,6 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
             int dHeight = drawable.getIntrinsicHeight();
 
             float scale;
-
-            //根据图片和View的宽高来确定图片缩放比例
-//            if (dWidth < width || dHeight < height) {
-//                //将图片放大，能够填充满 View
-//                scale = Math.max(width * 1.0f / dWidth, height * 1.0f / dHeight);
-//            } else {
-//                //将图片缩小，尽可能让图片多展示
-//                scale = Math.max(width * 1.0f / dWidth, height * 1.0f / dHeight);
-//            }
 
             //以View的宽度为基准，宽度填充满，高度等比例缩放
             scale = width * 1.0f / dWidth;
@@ -423,7 +393,7 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
 
             //rectF.left 在drawable 的宽度大于 View的宽高的情况下，rectF.left <= 0 ,否则 >= 0;
             int startX = Math.round(-rectF.left); //四舍五入的原理是在参数上加0.5然后进行下取整
-            if (getWidth() < rectF.width()) {
+            if (viewWidth < rectF.width()) {
                 minX = 0;
                 maxX = Math.round(rectF.width() - getWidth());
             } else {
@@ -431,7 +401,7 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
             }
 
             int startY = Math.round(-rectF.top);
-            if (getWidth() < rectF.height()) {
+            if (viewHeight < rectF.height()) {
                 minY = 0;
                 maxY = Math.round(rectF.height() - getHeight());
             } else {
