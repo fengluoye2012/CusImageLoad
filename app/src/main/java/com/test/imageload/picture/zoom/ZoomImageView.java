@@ -93,6 +93,9 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
             //单击事件
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
+                if (singleClickListener != null) {
+                    singleClickListener.setSingleClick();
+                }
                 return super.onSingleTapConfirmed(e);
             }
 
@@ -127,6 +130,9 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
             }
         });
 
+        /**
+         * 手势滑动
+         */
         scaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleGestureDetector.OnScaleGestureListener() {
             //缩放开始，返回值表示是否受理后续的缩放事件
             @Override
@@ -136,7 +142,7 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
             }
 
             /**
-             * 缩放进行中，返回值表示是否下次缩放需要重置，如果返回ture，那么detector就会重置缩放事件，如果返回false，detector会在之前的缩放上继续进行计算。
+             * 缩放进行中，返回值表示是否下次缩放需要重置，如果返回true，那么detector就会重置缩放事件，如果返回false，detector会在之前的缩放上继续进行计算。
              *
              * @param detector
              * @return
@@ -444,5 +450,16 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
         } else {
             view.postDelayed(runnable, 1000 / 60);
         }
+    }
+
+    //单击事件
+    public interface SingleClickListener {
+        public void setSingleClick();
+    }
+
+    private SingleClickListener singleClickListener;
+
+    public void setSingleClickListener(SingleClickListener singleClickListener) {
+        this.singleClickListener = singleClickListener;
     }
 }
