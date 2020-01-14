@@ -454,7 +454,7 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
 
     //单击事件
     public interface SingleClickListener {
-        public void setSingleClick();
+        void setSingleClick();
     }
 
     private SingleClickListener singleClickListener;
