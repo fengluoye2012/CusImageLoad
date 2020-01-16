@@ -36,7 +36,7 @@ class MainActivity : BaseActivity(), ItemClickListener {
         recyclerView.adapter = adapter
         adapter?.itemClickListener = this
 
-        adapter?.setData(DataUtil.getInstance().generateData())
+        adapter?.setData(DataUtil.get().generateData())
     }
 
 
