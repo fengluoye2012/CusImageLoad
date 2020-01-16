@@ -30,6 +30,10 @@
         <activity android:name="com.test.imageload.picture.lifecycle.LifeCycleActivity" />
         <activity android:name=".kotlin.ImageLoadLongPicActivity" />
         <activity android:name=".kotlin.BrowPicActivity" />
+        <activity android:name=".kotlin.HomeActivity" />
+        <activity
+            android:name=".kotlin.DetailActivity"
+            android:theme="@style/DetailTheme" />
     </application>
 
 </manifest>

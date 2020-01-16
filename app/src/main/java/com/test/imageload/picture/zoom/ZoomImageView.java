@@ -50,11 +50,6 @@ public class ZoomImageView extends AppCompatImageView implements View.OnTouchLis
     private Matrix matrix;
 
     /**
-     * 是否可以拖动
-     */
-    private boolean canDrag;
-
-    /**
      * 用于双手点击检测
      */
     private GestureDetector gestureDetector;
