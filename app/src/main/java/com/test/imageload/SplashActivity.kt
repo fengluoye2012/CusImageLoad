@@ -5,6 +5,10 @@ import android.os.Bundle
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.test.imageload.base.BaseActivity
+import com.test.imageload.db.BaseDaoFactory
+import com.test.imageload.db.DbTest
+import com.test.imageload.db.UserInfo
+import com.test.imageload.db.UserInfoDao
 import com.test.imageload.kotlin.MainActivity
 import com.test.imageload.picture.lifecycle.LifeCycleActivity
 
@@ -13,6 +17,7 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ButterKnife.bind(this)
+
     }
 
     override fun getLayoutId(): Int {

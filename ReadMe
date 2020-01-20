@@ -49,3 +49,11 @@ https://www.jianshu.com/p/e60aa23ab63f
 
 四、APP 抓包
 https://www.jianshu.com/p/8034b451585b
+
+五、简单实现GreenDao--根据GreenDao的设计思路简单事件对象型数据库
+GreenDao是一个对象关系映射（ORM）的开源框架，是一种将对象层次结构映射成关系型结构的方法。
+
+1、注解的使用：https://www.jianshu.com/p/de13b00042d6
+2、泛型、工厂设计模式
+
+

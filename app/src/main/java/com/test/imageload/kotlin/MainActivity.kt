@@ -9,6 +9,7 @@ import com.test.imageload.CusZoomViewActivity
 import com.test.imageload.R
 import com.test.imageload.base.BaseActivity
 import com.test.imageload.base.ItemClickListener
+import com.test.imageload.db.DbTest
 import com.test.imageload.utils.DataUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -25,6 +26,8 @@ class MainActivity : BaseActivity(), ItemClickListener {
 
     override fun initData() {
         super.initData()
+        var dbTest = DbTest()
+
         initRecyclerView()
     }
 
