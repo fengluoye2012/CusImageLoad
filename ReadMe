@@ -16,6 +16,12 @@ https://www.jianshu.com/p/f9cfbea586c2
 
 3）图片放缩、加载长图
 https://blog.csdn.net/lijinweii/article/details/77717540
+https://blog.csdn.net/jingzz1/article/details/84663067
+MotionEvent详解：https://blog.csdn.net/vicwudi/article/details/82084965
+Matrix讲解：https://blog.csdn.net/cquwentao/article/details/51445269
+技术点：Matrix，Scroller，
+
+4）加载长图：BitmapRegionDecoder
 
 二：使用Kotlin 作为开发语言 熟练掌握基本用法
 1、Java和Kotlin混用：https://www.jianshu.com/p/9220227cdfb3
@@ -34,7 +40,21 @@ https://www.jianshu.com/p/e60aa23ab63f
 
 8、协程是轻量级的线程
 
+9、单例模式 https://www.jianshu.com/p/5797b3d0ebd0
+
+10、委托
+
 三：单元测试
+
+四、APP 抓包
+https://www.jianshu.com/p/8034b451585b
+
+五、简单实现GreenDao--根据GreenDao的设计思路简单事件对象型数据库
+GreenDao是一个对象关系映射（ORM）的开源框架，是一种将对象层次结构映射成关系型结构的方法。
+
+1、注解的使用：https://www.jianshu.com/p/de13b00042d6
+2、泛型、工厂设计模式
+
 
 四：android  保存本地密钥实践：https://www.jianshu.com/p/a24353ce977a
 在登录模块中需要对验证码、密码进行加密处理，非对称加密（公钥、私钥），防止明文数据传输，数据泄漏。
