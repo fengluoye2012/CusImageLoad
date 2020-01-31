@@ -120,5 +120,16 @@ class KotlinActivity : AppCompatActivity(), View.OnClickListener, ItemClickListe
         super.onResume()
 
     }
+
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        
+    }
 }
 
