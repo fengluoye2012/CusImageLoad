@@ -46,7 +46,6 @@ https://www.jianshu.com/p/e60aa23ab63f
 
 三：单元测试
 
-
 四、APP 抓包
 https://www.jianshu.com/p/8034b451585b
 
@@ -56,4 +55,48 @@ GreenDao是一个对象关系映射（ORM）的开源框架，是一种将对象
 1、注解的使用：https://www.jianshu.com/p/de13b00042d6
 2、泛型、工厂设计模式
 
+
+四：加密算法：
+1、对称加密（AES、DES）、非对称加密（RSA）、不可逆加密（MD5、SHA1）：https://www.cnblogs.com/tuyile006/p/10873975.html
+2、android  保存本地密钥实践：https://www.jianshu.com/p/a24353ce977a
+在登录模块中需要对验证码、密码进行加密处理，非对称加密（公钥、私钥），防止明文数据传输，数据泄漏。
+客户端公钥如何保存？使用so库文件，通过jni方式进行验证，通过签名信息校验调用者是否正确。
+3、Https的数字证书验证原理：https://blog.csdn.net/liuxingrong666/article/details/83869161
+
+
+五：面试题
+https://www.jianshu.com/p/cfac5c131a9b
+synchronized作用范围和对象：https://blog.csdn.net/qa275267067/article/details/79804713
+ANR原理分析和解决办法：https://www.jianshu.com/p/388166988cef
+
+六、组件化、插件化
+组件化--组件自动注册方案：
+1、一种更高效的组件自动注册方案(android组件化开发)：https://blog.csdn.net/cdecde111/article/details/78074692
+
+2、Android彻底组件化demo发布--生命周期：https://www.jianshu.com/p/59822a7b2fad   特别重要
+解释了字节码插入方式和反射调用方式，在什么时机加载组件，以及如何加载组件
+
+在什么时机加载组件以及如何加载组件？目前com.dd.comgradle提供了两种方式，字节码插入和反射调用。
+
+- 字节码插入模式是在dex生成之前，扫描所有的ApplicationLike类（其有一个共同的父类），然后通过javassist在主项目的Application.onCreate()
+中插入调用ApplicationLike.onCreate()的代码。这样就相当于每个组件在application启动的时候就加载起来了。
+
+- 反射调用的方式是手动在Application.onCreate()中或者在其他合适的时机手动通过反射的方式来调用ApplicationLike.onCreate()。
+之所以提供这种方式原因有两个：对代码进行扫描和插入会增加编译的时间，特别在debug的时候会影响效率，并且这种模式对Instant Run支持不好；
+另一个原因是可以更灵活的控制加载或者卸载时机。
+这两种模式的配置是通过配置com.dd.comgradle的Extension来实现的，
+下面是字节码插入的模式下的配置格式，添加applicationName的目的是加快定位Application的速度。
+
+todo 反射的方式在合适加载、卸载module? 可以考虑在调用组件的时候加载，但是何时卸载呢  只能通过Application类的onTerminate()方法卸载。
+
+3、组件生命周期管理：https://www.jianshu.com/p/65433846d38a
+组件生命周期如何实现自动注册：https://www.jianshu.com/p/59368ce8b670
+自定义gradle 插件： https://www.jianshu.com/p/3ec8e9574aaf
+
+七、视频播放器
+1、视频缓存实现原理：https://www.jianshu.com/p/f057a03ded0b
+一种边播边下的播放策略：https://juejin.im/entry/59b09fcff265da24754db224
+如何实现视频分片段存储？？ AndroidVideoCache实现原理 todo
+
+2、seek 精确跳转  todo
 
