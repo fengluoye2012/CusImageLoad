@@ -7,10 +7,12 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.test.imageload.db.annotion.DbTable;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 模仿GreenDao 如何实现对象关系映射数据库
@@ -43,7 +45,7 @@ public abstract class BaseDao<T> implements IBaseDao<T> {
     /**
      * 字段名称--类型 对应关系
      */
-    Map<String, Object> fileMap;
+    Map<Field, Object> fileMap;
 
     /**
      * 初始化，保证只初始化一次
@@ -105,7 +107,7 @@ public abstract class BaseDao<T> implements IBaseDao<T> {
 
 
     /**
-     * 成员变量名称--类型的对应关系
+     * 成员变量--类型的对应关系
      */
     public void initFileMap() {
         fileMap = new HashMap<>();
@@ -115,26 +117,30 @@ public abstract class BaseDao<T> implements IBaseDao<T> {
             field.setAccessible(true);
 
             Class<?> type = field.getType();
+
             if (type == Integer.TYPE) {
-                fileMap.put(field.getName(), Integer.TYPE);
+                fileMap.put(field, Integer.TYPE);
             } else if (type == Long.TYPE) {
-                fileMap.put(field.getName(), Long.TYPE);
+                fileMap.put(field, Long.TYPE);
             } else if (type == String.class) {
-                fileMap.put(field.getName(), String.class);
+                fileMap.put(field, String.class);
             } else if (type == Short.TYPE) {
-                fileMap.put(field.getName(), Short.class);
+                fileMap.put(field, Short.class);
+            } else if (type == char.class) {
+                fileMap.put(field, char.class);
             } else if (type == Object.class) {
-                fileMap.put(field.getName(), Object.class);
+                fileMap.put(field, Object.class);
             }
+
+            LogUtils.i("......");
         }
-
-        LogUtils.i("......");
     }
-
 
     @Override
     public Long insert(T entity) {
-        getValues(entity);
+        Map<String, String> values = getValues(entity);
+        
+
         return null;
     }
 
@@ -165,8 +171,23 @@ public abstract class BaseDao<T> implements IBaseDao<T> {
     }
 
     //获取字段名称和其value 对应关系
-    protected void getValues(T entity) {
-        Map<String, Object> values = new HashMap<>();
+    protected Map<String, String> getValues(T entity) {
+        Map<String, String> values = new HashMap<>();
+        Field[] fields = entityCls.getFields();
+        String value = null;
+        for (Field field : fields) {
+            try {
+                if (field.get(entity) == null) {
+                    continue;
+                }
+                value = field.get(entity).toString();
+                LogUtils.i(field.getName() + "：：" + value);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            values.put(field.getName(), value);
+        }
+        return values;
     }
 
     /**
