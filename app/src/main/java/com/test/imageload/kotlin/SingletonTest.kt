@@ -24,7 +24,7 @@ class SingletonTest private constructor() {
         return instance
     }
 
-    private var instance1: SingletonTest = SingletonTest();
+    private var instance1: SingletonTest = SingletonTest()
 
     public fun getInstance1(): SingletonTest {
         return instance1;

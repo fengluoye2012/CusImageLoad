@@ -43,21 +43,20 @@ class MainActivity : BaseActivity(), ItemClickListener {
     }
 
 
-
     /**
      * 条目点击事件
      */
     override fun onItemClick(pos: Int) {
         val posBean = adapter?.getPosBean(pos) ?: return
 
-        var intent = when {
-            pos < adapter?.itemCount?.div(4) ?: 0 -> Intent(act, ImageLoadLongPicActivity::class.java)
-            pos < (adapter?.itemCount?.div(4)
-                    ?: 0) * 2 -> Intent(act, CusZoomViewActivity::class.java)
-            pos < (adapter?.itemCount?.div(4)
-                    ?: 0) * 3 -> Intent(act, DetailActivity::class.java)
+        val intent = when (pos) {
+            0 -> Intent(act, ImageLoadLongPicActivity::class.java)
+            1 -> Intent(act, CusZoomViewActivity::class.java)
+            2 -> Intent(act, DetailActivity::class.java)
+            3 -> Intent(act, VideoCacheActivity::class.java)
             else -> Intent(act, BrowPicActivity::class.java)
         }
+        
         act?.startActivity(intent)
 
         ToastUtils.showShort("我是Item%d,,%s", pos, posBean.name)

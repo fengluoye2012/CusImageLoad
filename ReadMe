@@ -44,6 +44,11 @@ https://www.jianshu.com/p/e60aa23ab63f
 
 10、委托
 
+11、静态方法的实现 https://www.jianshu.com/p/9e1e1a55da73
+在kotlin中调用的静态方法的方式有两种静态类或者静态方法
+companion object{}  放静态变量和静态方法
+object 替换class 表示静态类
+
 三：单元测试
 
 四、APP 抓包
