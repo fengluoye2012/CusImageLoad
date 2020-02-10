@@ -43,6 +43,8 @@ class VideoCacheActivity : BaseActivity() {
 
         var videoUrl = "https://assets.yyuehd.com/Fhev_4GB6fmylVxKvT60clrbPOCI"
         val proxyUrl = getProxy()?.getProxyUrl(videoUrl)
+        //http://127.0.0.1:38415/https%3A%2F%2Fassets.yyuehd.com%2FFhev_4GB6fmylVxKvT60clrbPOCI
+        LogUtils.i("proxyUrl：$proxyUrl")
 
         mediaPlayer?.setDataSource(proxyUrl)
         mediaPlayer?.isLooping = true
